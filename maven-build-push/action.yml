@@ -1,0 +1,50 @@
+name: "Build Maven App"
+description: "Build Spring Boot App"
+inputs:
+  checkout:
+    description: "If Checkout the repository"
+    required: true
+    default: true
+  username:
+    description: "Username from secrets"
+    required: true
+  user-token:
+    description: "User token from secrets"
+    required: true
+  module-directory:
+    description: "For one repo, the directory of module. By default ./"
+    required: true
+    default: "./"
+  java-version:
+    description: "The Java version."
+    required: true
+    default: 21
+  java-distribution:
+    description: "The Java distribution."
+    required: true
+    default: "adopt"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Checkout the repository"
+      if: ${{ inputs.checkout == 'true' }}
+      uses: actions/checkout@v4
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ inputs.java-distribution }}
+        java-version: ${{ inputs.java-version }}
+        server-id: github
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_PASSWORD
+
+    - name: Build Server
+      shell: bash
+      run: |
+        cd ./${{ inputs.module-directory }}
+        mvn -B deploy
+      env:
+        MAVEN_USERNAME: ${{ inputs.username }}
+        MAVEN_PASSWORD: ${{ inputs.user-token }}
