@@ -1,6 +1,10 @@
 name: "Build Spring Boot App"
 description: "Build Spring Boot App"
 inputs:
+  checkout:
+    description: "If Checkout the repository"
+    required: true
+    default: true
   username:
     description: "Username from secrets"
     required: true
@@ -42,6 +46,7 @@ runs:
   using: "composite"
   steps:
     - name: "Checkout the repository"
+      if: ${{ inputs.checkout == 'true' }}
       uses: actions/checkout@v4
 
     - name: Set up JDK
@@ -54,6 +59,7 @@ runs:
         server-password: MAVEN_PASSWORD
 
     - name: Build Server
+      shell: bash
       run: mvn -f ${{ inputs.module-directory }}/ package
       env:
         MAVEN_USERNAME: ${{ inputs.username }}
