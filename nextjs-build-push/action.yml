@@ -2,7 +2,7 @@ name: "Build NextJs App"
 description: "Build NextJs App"
 inputs:
   checkout:
-    description: "Checkout the repository"
+    description: "If Checkout the repository"
     required: true
     default: true
   username:
@@ -33,6 +33,10 @@ inputs:
     description: "The docker registry to push image. By default ghcr.io"
     required: true
     default: "ghcr.io"
+  push:
+    description: "If push docker image"
+    required: true
+    default: true
 
 runs:
   using: "composite"
@@ -87,7 +91,7 @@ runs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v6
       with:
-        push: true
+        push: ${{ inputs.push }}
         context: ${{ inputs.module-directory }}/
         file: ${{ inputs.module-directory }}/Dockerfile
         tags: ${{ steps.meta.outputs.tags }}
