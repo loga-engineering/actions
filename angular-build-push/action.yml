@@ -73,7 +73,7 @@ runs:
         node --max_old_space_size=${{ inputs.build-size }} ./node_modules/@angular/cli/bin/ng build --prod
 
     - name: "Build and Push Docker Image"
-      uses: loga-engineering/actions/docker-build-push@v0.0.6
+      uses: loga-engineering/actions/docker-build-push@v0.0.7
       with:
         username: ${{ inputs.username }}
         user-token: ${{ inputs.user-token }}

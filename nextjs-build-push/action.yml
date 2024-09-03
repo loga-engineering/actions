@@ -69,7 +69,7 @@ runs:
         npm run build
 
     - name: "Build and Push Docker Image"
-      uses: loga-engineering/actions/docker-build-push@v0.0.6
+      uses: loga-engineering/actions/docker-build-push@v0.0.7
       with:
         username: ${{ inputs.username }}
         user-token: ${{ inputs.user-token }}
